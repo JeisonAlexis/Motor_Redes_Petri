@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import List, Tuple
 
 import numpy as np
 
@@ -78,3 +79,38 @@ class PetriMatrixEngine:
                 raise RuntimeError("Inconsistencia interna en la red")
             place.tokens = int(value)
         return new_mu
+
+    # --- Métodos nuevos ---
+    def get_marking_tuple(self) -> Tuple[int, ...]:
+        """Retorna el marcado actual como tupla de enteros."""
+        view = self.matrix_view()
+        return tuple(int(v) for v in view.mu)
+
+    def get_marking_dict(self) -> dict[str, int]:
+        """Retorna el marcado actual como diccionario {id_lugar: tokens}."""
+        view = self.matrix_view()
+        return {pid: int(view.mu[i]) for i, pid in enumerate(view.place_ids)}
+
+    def set_marking_from_tuple(self, marking: Tuple[int, ...]) -> None:
+        """Restaura el marcado a partir de una tupla (debe coincidir el orden de places)."""
+        view = self.matrix_view()
+        if len(marking) != len(view.place_ids):
+            raise ValueError("La tupla no coincide con la cantidad de lugares")
+        for i, pid in enumerate(view.place_ids):
+            place = self.net.get_place(pid)
+            if place is not None:
+                place.tokens = marking[i]
+
+    def fire_sequence(self, sequence: List[str]) -> List[Tuple[int, ...]]:
+        """
+        Dispara una secuencia de transiciones.
+        Retorna una lista de marcados intermedios (tuplas).
+        Lanza excepción si alguna transición no está habilitada.
+        """
+        markings = [self.get_marking_tuple()]
+        for tid in sequence:
+            if not self.is_enabled(tid):
+                raise RuntimeError(f"Transición {tid} no habilitada en {markings[-1]}")
+            self.fire(tid)
+            markings.append(self.get_marking_tuple())
+        return markings

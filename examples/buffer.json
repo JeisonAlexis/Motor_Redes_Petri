@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "name": "Sistema concurrente con crecimiento",
+  "places": [
+    {
+      "id": "Pstart",
+      "label": "Pstart",
+      "x": 200.0,
+      "y": 150.0,
+      "tokens": 1
+    },
+    {
+      "id": "Pbuffer",
+      "label": "Pbuffer",
+      "x": 400.0,
+      "y": 150.0,
+      "tokens": 0
+    },
+    {
+      "id": "Psync",
+      "label": "Psync",
+      "x": 600.0,
+      "y": 150.0,
+      "tokens": 0
+    },
+    {
+      "id": "Pend",
+      "label": "Pend",
+      "x": 400.0,
+      "y": 350.0,
+      "tokens": 0
+    }
+  ],
+  "transitions": [
+    {
+      "id": "Tgen",
+      "label": "Tgen",
+      "x": 300.0,
+      "y": 100.0
+    },
+    {
+      "id": "Tdup",
+      "label": "Tdup",
+      "x": 500.0,
+      "y": 100.0
+    },
+    {
+      "id": "Tsync",
+      "label": "Tsync",
+      "x": 600.0,
+      "y": 250.0
+    }
+  ],
+  "arcs": [
+    {
+      "source": "Pstart",
+      "target": "Tgen",
+      "weight": 1
+    },
+    {
+      "source": "Tgen",
+      "target": "Pbuffer",
+      "weight": 1
+    },
+    {
+      "source": "Pbuffer",
+      "target": "Tdup",
+      "weight": 1
+    },
+    {
+      "source": "Tdup",
+      "target": "Pbuffer",
+      "weight": 2
+    },
+    {
+      "source": "Tdup",
+      "target": "Psync",
+      "weight": 1
+    },
+    {
+      "source": "Pbuffer",
+      "target": "Tsync",
+      "weight": 1
+    },
+    {
+      "source": "Psync",
+      "target": "Tsync",
+      "weight": 1
+    },
+    {
+      "source": "Tsync",
+      "target": "Pend",
+      "weight": 1
+    }
+  ]
+}

@@ -32,6 +32,27 @@ class CoverageTree:
     def children_of(self, node_id: int) -> list[CoverageNode]:
         return [self.nodes[child_id] for child_id in self.nodes[node_id].children_ids]
 
+    # --- Métodos auxiliares nuevos ---
+    def is_unbounded(self) -> bool:
+        """Retorna True si algún lugar tiene ω en el árbol."""
+        return any(OMEGA in node.marking for node in self.nodes.values())
+
+    def get_unbounded_places(self) -> List[str]:
+        """Retorna lista de IDs de lugares que son no acotados."""
+        unbounded = []
+        for idx, pid in enumerate(self.place_ids):
+            if any(node.marking[idx] == OMEGA for node in self.nodes.values()):
+                unbounded.append(pid)
+        return unbounded
+
+    def transitions_in_tree(self) -> set[str]:
+        """Retorna el conjunto de transiciones que aparecen en algún arco del árbol."""
+        trans = set()
+        for node in self.nodes.values():
+            if node.via_transition is not None:
+                trans.add(node.via_transition)
+        return trans
+
 
 class CoverageTreeBuilder:
     def __init__(self, net: PetriNet):

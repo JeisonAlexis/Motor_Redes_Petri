@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "name": "Sistema con recurso limitado",
+  "places": [
+    {
+      "id": "Pcola",
+      "label": "Pcola",
+      "x": 185.0,
+      "y": 201.0,
+      "tokens": 3
+    },
+    {
+      "id": "Precurso",
+      "label": "Precurso",
+      "x": 400.0,
+      "y": 200.0,
+      "tokens": 1
+    },
+    {
+      "id": "Pproceso",
+      "label": "Pproceso",
+      "x": 298.0,
+      "y": 310.0,
+      "tokens": 0
+    },
+    {
+      "id": "Pfin",
+      "label": "Pfin",
+      "x": 305.0,
+      "y": 423.0,
+      "tokens": 0
+    }
+  ],
+  "transitions": [
+    {
+      "id": "Tprocesar",
+      "label": "Tprocesar",
+      "x": 300.0,
+      "y": 150.0
+    },
+    {
+      "id": "Tsalida",
+      "label": "Tsalida",
+      "x": 500.0,
+      "y": 300.0
+    }
+  ],
+  "arcs": [
+    {
+      "source": "Pcola",
+      "target": "Tprocesar",
+      "weight": 1
+    },
+    {
+      "source": "Precurso",
+      "target": "Tprocesar",
+      "weight": 1
+    },
+    {
+      "source": "Tprocesar",
+      "target": "Pproceso",
+      "weight": 1
+    },
+    {
+      "source": "Pproceso",
+      "target": "Tsalida",
+      "weight": 1
+    },
+    {
+      "source": "Tsalida",
+      "target": "Pfin",
+      "weight": 1
+    },
+    {
+      "source": "Tsalida",
+      "target": "Precurso",
+      "weight": 1
+    }
+  ]
+}

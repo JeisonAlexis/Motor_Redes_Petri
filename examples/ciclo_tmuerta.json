@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "name": "Ciclo con transición muerta",
+  "places": [
+    {
+      "id": "P1",
+      "label": "P1",
+      "x": 202.0,
+      "y": 199.0,
+      "tokens": 1
+    },
+    {
+      "id": "P2",
+      "label": "P2",
+      "x": 402.0,
+      "y": 193.0,
+      "tokens": 0
+    },
+    {
+      "id": "P3",
+      "label": "P3",
+      "x": 400.0,
+      "y": 400.0,
+      "tokens": 0
+    },
+    {
+      "id": "PSink",
+      "label": "PSink",
+      "x": 155.0,
+      "y": 423.0,
+      "tokens": 0
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "label": "T1",
+      "x": 300.0,
+      "y": 150.0
+    },
+    {
+      "id": "T2",
+      "label": "T2",
+      "x": 500.0,
+      "y": 300.0
+    },
+    {
+      "id": "T3",
+      "label": "T3",
+      "x": 300.0,
+      "y": 450.0
+    },
+    {
+      "id": "TDead",
+      "label": "TDead",
+      "x": 100.0,
+      "y": 300.0
+    }
+  ],
+  "arcs": [
+    {
+      "source": "P1",
+      "target": "T1",
+      "weight": 1
+    },
+    {
+      "source": "T1",
+      "target": "P2",
+      "weight": 1
+    },
+    {
+      "source": "P2",
+      "target": "T2",
+      "weight": 1
+    },
+    {
+      "source": "T2",
+      "target": "P3",
+      "weight": 1
+    },
+    {
+      "source": "P3",
+      "target": "T3",
+      "weight": 1
+    },
+    {
+      "source": "T3",
+      "target": "P1",
+      "weight": 1
+    },
+    {
+      "source": "P1",
+      "target": "TDead",
+      "weight": 2
+    },
+    {
+      "source": "TDead",
+      "target": "PSink",
+      "weight": 1
+    }
+  ]
+}

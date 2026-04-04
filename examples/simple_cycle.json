@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "name": "Ciclo simple",
+  "places": [
+    {"id": "P1", "label": "P1", "x": 180, "y": 240, "tokens": 1},
+    {"id": "P2", "label": "P2", "x": 500, "y": 240, "tokens": 0}
+  ],
+  "transitions": [
+    {"id": "T1", "label": "T1", "x": 340, "y": 240},
+    {"id": "T2", "label": "T2", "x": 340, "y": 420}
+  ],
+  "arcs": [
+    {"source": "P1", "target": "T1", "weight": 1},
+    {"source": "T1", "target": "P2", "weight": 1},
+    {"source": "P2", "target": "T2", "weight": 1},
+    {"source": "T2", "target": "P1", "weight": 1}
+  ]
+}

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "petri-matrix-studio"
+version = "0.1.0"
+description = "Motor matricial de redes de Petri con editor grafico, JSON y simulacion interactiva"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  {name = "OpenAI"}
+]
+license = {text = "MIT"}
+dependencies = [
+  "numpy>=1.24"
+]
+keywords = ["petri nets", "matrix equations", "tkinter", "simulation"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+
+[project.scripts]
+petri-matrix-studio = "petri_matrix_studio.__main__:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

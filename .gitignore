@@ -1,0 +1,68 @@
+# ==============================
+# 🐍 PYTHON
+# ==============================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+venv/
+.env/
+.venv/
+
+# ==============================
+# 📦 BUILD / DISTRIBUCIÓN
+# ==============================
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ==============================
+# 🧪 TEST / CACHE
+# ==============================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ==============================
+# 🧠 IDEs / EDITORES
+# ==============================
+
+# VSCode
+.vscode/
+
+# PyCharm / IntelliJ
+.idea/
+
+# Otros
+*.swp
+*.swo
+*~
+
+# ==============================
+# 💻 SISTEMA OPERATIVO
+# ==============================
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Mac
+.DS_Store
+
+# ==============================
+# 📁 ARCHIVOS LOCALES DEL PROYECTO
+# ==============================
+
+# Archivos temporales o de pruebas
+*.log
+
+# JSON de prueba (opcional)
+# Si tienes redes de prueba que NO quieres subir
+tests/*.json
+
+# ==============================
+# 🔐 VARIABLES SENSIBLES
+# ==============================
+.env

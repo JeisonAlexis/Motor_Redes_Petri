@@ -57,8 +57,4 @@ petri-matrix-studio
 }
 ```
 
-## Pruebas
 
-```bash
-pytest -q
-```

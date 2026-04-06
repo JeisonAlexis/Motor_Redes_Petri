@@ -7,7 +7,7 @@ Motor de redes de Petri con editor gráfico basado en la formulación matricial 
 - con `D = D⁺ - D⁻`
 
 <div style="text-align:center; margin-bottom:15px;">
-  <a href="https://jeisonalexis.github.io/documentoTecnicoCupido/petri.html" target="_blank">
+  <a href="https://jeisonalexis.github.io/documentosPages/petri.html" target="_blank">
     📄 Informe Tecnico Trabajo Motor de Redes de Petri
   </a>
 </div>

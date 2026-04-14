@@ -9,23 +9,31 @@ from .coverage import CoverageTree, CoverageTreeBuilder, OMEGA
 from .model import PetriNet
 
 
-def verify_sequence(
-    net: PetriNet, sequence: List[str]
-) -> Tuple[bool, Optional[int], Optional[Dict[str, int]]]:
-    """
-    Verifica si una secuencia de transiciones es válida.
-    Retorna (válida, paso_fallo, marcado_al_fallar).
-    """
-    # Trabajamos sobre una copia para no modificar la red original
+def verify_sequence(net: PetriNet, sequence: List[str]) -> Tuple[bool, Optional[int], Optional[Dict[str, int]]]:
+
     test_net = deepcopy(net)
     engine = PetriMatrixEngine(test_net)
     marking = engine.matrix_view().mu.copy()
 
     for i, tid in enumerate(sequence):
         if tid not in engine.matrix_view().transition_ids:
-            return False, i, {pid: int(marking[idx]) for idx, pid in enumerate(engine.matrix_view().place_ids)}
+            return (
+                False,
+                i,
+                {
+                    pid: int(marking[idx])
+                    for idx, pid in enumerate(engine.matrix_view().place_ids)
+                },
+            )
         if not engine.is_enabled(tid):
-            return False, i, {pid: int(marking[idx]) for idx, pid in enumerate(engine.matrix_view().place_ids)}
+            return (
+                False,
+                i,
+                {
+                    pid: int(marking[idx])
+                    for idx, pid in enumerate(engine.matrix_view().place_ids)
+                },
+            )
         engine.fire(tid)
         marking = engine.matrix_view().mu
     return True, None, None
@@ -37,22 +45,17 @@ def exact_reachability(
     max_depth: int = 1000,
     max_states: int = 10000,
 ) -> Tuple[Optional[bool], Optional[List[str]]]:
-    """
-    Determina si se puede alcanzar exactamente una marcación objetivo.
-    Retorna (True, secuencia) si es alcanzable.
-    (False, None) si es imposible (red acotada y espacio explorado).
-    (None, None) si no se sabe (red no acotada y límite alcanzado).
-    """
-    # Construir árbol de cobertura para saber si es no acotada
+   
+   #Detectar si la red es no acotada
     try:
+        # Construye el árbol de cobertura
         tree = CoverageTreeBuilder(net).build()
-        unbounded = any(
-            OMEGA in node.marking for node in tree.nodes.values()
-        )
+        # Revisa si existe ω en alguna marcación → indica crecimiento infinito
+        unbounded = any(OMEGA in node.marking for node in tree.nodes.values())
     except Exception:
-        unbounded = False  # Si falla, asumimos acotada por seguridad
+        unbounded = False  
 
-    # BFS
+    # BFS (búsqueda en anchura)
     start_net = deepcopy(net)
     start_engine = PetriMatrixEngine(start_net)
     start_marking = start_engine.matrix_view().mu
@@ -62,6 +65,7 @@ def exact_reachability(
         target_marking.get(pid, 0) for pid in start_engine.matrix_view().place_ids
     )
 
+    #ya estamos en la marcación objetivo
     if start_tuple == target_tuple:
         return True, []
 
@@ -71,17 +75,18 @@ def exact_reachability(
     states_explored = 0
 
     while queue and len(visited) <= max_states:
+        # Sacamos el siguiente estado a explorar
         current_marking, path = queue.popleft()
+        
         if len(path) > max_depth:
             continue
 
-        # Restaurar estado en una copia temporal
         test_net = deepcopy(net)
         test_engine = PetriMatrixEngine(test_net)
-        # Llevar la red al marking actual
+        
         for i, pid in enumerate(test_engine.matrix_view().place_ids):
             test_net.get_place(pid).tokens = current_marking[i]
-        test_engine = PetriMatrixEngine(test_net)  # refrescar vista
+        test_engine = PetriMatrixEngine(test_net)  
 
         for tid in test_engine.matrix_view().transition_ids:
             if test_engine.is_enabled(tid):
@@ -89,19 +94,26 @@ def exact_reachability(
                 new_engine.fire(tid)
                 new_marking = new_engine.matrix_view().mu
                 new_tuple = tuple(int(v) for v in new_marking)
+                
+                # Si llegamos al objetiv
                 if new_tuple == target_tuple:
                     return True, path + [tid]
+                
+                # Marcar como visitado
                 if new_tuple not in visited:
                     visited.add(new_tuple)
                     queue.append((new_tuple, path + [tid]))
+                    
         states_explored += 1
         if states_explored > max_states:
             break
 
+    # No se puede asegurar (la red puede crecer infinito)
     if unbounded:
-        return None, None  # No se sabe
+        return None, None  
     else:
-        return False, None  # Imposible
+        return False, None
+    #la red esta acotada
 
 
 def coverability(net: PetriNet, target_marking: Dict[str, int]) -> bool:
@@ -127,9 +139,7 @@ def detect_deadlock(engine: PetriMatrixEngine) -> bool:
     return len(engine.enabled_transition_ids()) == 0
 
 
-def detect_bottlenecks(
-    net: PetriNet, factor: float = 2.0
-) -> List[Tuple[str, int]]:
+def detect_bottlenecks(net: PetriNet, factor: float = 2.0) -> List[Tuple[str, int]]:
     """
     Detecta lugares con acumulación de tokens.
     Criterio: tokens > (promedio * factor).

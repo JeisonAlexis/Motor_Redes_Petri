@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "name": "Sistema mixto (ideal para método híbrido)",
+  "places": [
+    {
+      "id": "Pentrada",
+      "label": "Pentrada",
+      "x": 150.0,
+      "y": 150.0,
+      "tokens": 2
+    },
+    {
+      "id": "Pbuffer",
+      "label": "Pbuffer",
+      "x": 350.0,
+      "y": 150.0,
+      "tokens": 0
+    },
+    {
+      "id": "Precurso",
+      "label": "Precurso",
+      "x": 550.0,
+      "y": 150.0,
+      "tokens": 1
+    },
+    {
+      "id": "Pproceso",
+      "label": "Pproceso",
+      "x": 350.0,
+      "y": 300.0,
+      "tokens": 0
+    },
+    {
+      "id": "Psalida",
+      "label": "Psalida",
+      "x": 550.0,
+      "y": 300.0,
+      "tokens": 0
+    }
+  ],
+  "transitions": [
+    {
+      "id": "Tgen",
+      "label": "Tgen",
+      "x": 250.0,
+      "y": 100.0
+    },
+    {
+      "id": "Tdup",
+      "label": "Tdup",
+      "x": 350.0,
+      "y": 50.0
+    },
+    {
+      "id": "Tprocesar",
+      "label": "Tprocesar",
+      "x": 450.0,
+      "y": 200.0
+    },
+    {
+      "id": "Tsalida",
+      "label": "Tsalida",
+      "x": 550.0,
+      "y": 350.0
+    }
+  ],
+  "arcs": [
+    {
+      "source": "Pentrada",
+      "target": "Tgen",
+      "weight": 1
+    },
+    {
+      "source": "Tgen",
+      "target": "Pbuffer",
+      "weight": 1
+    },
+
+    {
+      "source": "Pbuffer",
+      "target": "Tdup",
+      "weight": 1
+    },
+    {
+      "source": "Tdup",
+      "target": "Pbuffer",
+      "weight": 2
+    },
+
+    {
+      "source": "Pbuffer",
+      "target": "Tprocesar",
+      "weight": 1
+    },
+    {
+      "source": "Precurso",
+      "target": "Tprocesar",
+      "weight": 1
+    },
+    {
+      "source": "Tprocesar",
+      "target": "Pproceso",
+      "weight": 1
+    },
+
+    {
+      "source": "Pproceso",
+      "target": "Tsalida",
+      "weight": 1
+    },
+    {
+      "source": "Tsalida",
+      "target": "Psalida",
+      "weight": 1
+    },
+    {
+      "source": "Tsalida",
+      "target": "Precurso",
+      "weight": 1
+    }
+  ]
+}
